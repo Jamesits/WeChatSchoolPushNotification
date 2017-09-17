@@ -1,0 +1,20 @@
+.logo-stub {
+    min-height: 128px;
+    min-width: 128px;
+}
+
+.title {
+    font-size: 5em;
+}
+
+.title-row {
+    border-bottom: black dotted 1px;
+}
+
+#class-list-title {
+    font-size: 3em;
+}
+
+#class-list {
+    font-size: 3em;
+}

@@ -15,11 +15,12 @@
 #define MAX_NFC_SELF_TEST_RETRIES 10
 #define MAX_WIFI_CONNECT_WAIT_RETRIES 10
 #define MAX_NFC_PROBE_RETRIES 2
+#define BUTTON_PRESS_WAIT 80
 
 #define WIFI_SSID "james_dorm_iot"
 #define WIFI_PASS "internetofshit"
 
-#define API_BASE_URL "http://192.168.88.250:8000/api/v1/"
+#define API_BASE_URL "http://192.168.88.250:8000/v1/"
 #define USER_AGENT "ClassroomTerminal 1.0"
 
 // config end
@@ -62,6 +63,7 @@ void setup() {
   int mfrc522_version = mfrc522.PCD_ReadRegister(mfrc522.VersionReg);
   if (mfrc522_version != 0x91 && mfrc522_version != 0x92) {
     Serial.print(F("unknown software version "));
+    flash_twice();
   } else {
     Serial.print("version ");
   }
@@ -118,6 +120,7 @@ void setup() {
 
 byte last_card_uid[CARD_UID_SIZE] = {0};
 bool last_contacted = false;
+int button_wait_countdown;
 
 void loop() { 
   // check Wi-Fi
@@ -138,12 +141,19 @@ void loop() {
     return;
   }
 
-  // check button press
-  // if (digitalRead(BUTTON) == HIGH) {
-  //   Serial.println(F("Button pressed"));
-  // }
+   // check button press
+   if (digitalRead(BUTTON) == LOW) {
+     Serial.println(F("Button pressed, entering card waiting mode"));
+     for (button_wait_countdown = BUTTON_PRESS_WAIT; button_wait_countdown; --button_wait_countdown) {
+      check_card_routine();
+     }
+     Serial.println(F("Card waiting mode timed out"));
+   }
 
-  // Look for new cards
+}
+
+void check_card_routine() {
+    // Look for new cards
   int retries = 0;
   bool result = false;
   while ((!(result=mfrc522.PICC_IsNewCardPresent())) && retries++ < MAX_NFC_PROBE_RETRIES) {
@@ -204,6 +214,17 @@ void print_byte_array(byte *buffer, byte bufferSize) {
   }
 }
 
+void flash_twice() {
+  digitalWrite(LED, LOW);
+  delay(100);
+  digitalWrite(LED, HIGH);
+  delay(100);
+  digitalWrite(LED, LOW);
+  delay(100);
+  digitalWrite(LED, HIGH);
+  delay(100);
+}
+
 void register_device() {
   Serial.print(F("Registering device..."));
   HTTPClient http;
@@ -222,6 +243,7 @@ void register_device() {
   } else {
     // HTTP error
     Serial.printf(" %s\n", http.errorToString(httpCode).c_str());
+    flash_twice();
   }
   http.end();
 }
@@ -232,7 +254,7 @@ void trigger_action() {
 
   // gather information
   unsigned char buf[200] = {0};
-  sprintf((char*)buf, "chipid=%X&", ESP.getChipId());
+  sprintf((char*)buf, "chipid=%X&cardid=", ESP.getChipId());
 
   int i;
   unsigned char *p;
@@ -251,6 +273,7 @@ void trigger_action() {
   } else {
     // HTTP error
     Serial.printf(" %s\n", http.errorToString(httpCode).c_str());
+    flash_twice();
   }
   http.end();
 }

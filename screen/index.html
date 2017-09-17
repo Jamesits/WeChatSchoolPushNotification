@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>微信签退系统</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row title-row align-items-center">
+                <div class="col-2 logo-stub align-self-start">
+                    <img src="img/school_logo.png"></img>
+                </div>
+                <div class="col title">放学通知系统</div>
+                <div class="col-1 align-self-end align-items-center">
+                    <button id="btnAskClear" type="button" class="btn btn-danger">清空</button>
+                    <button id="btnrefresh" type="button" class="btn btn-warning">刷新</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col container-fluid">
+                    <div class="row">
+                        <div id="class-list-title" class="col">已放学的班级</div>
+                    </div>
+                    <div id="alert-no-connection" class="row alert alert-warning" role="alert" style="display: none">
+                        无法连接到服务器。将会自动重试……
+                    </div>
+                    <div id="info-reconnected" class="row alert alert-success" role="alert" style="display: none">
+                            成功连接到服务器
+                    </div>
+                    <div class="row">
+                        <div id="class-list" class="col">正在加载……</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 对话框 -->
+        
+        <div class="modal fade" id="infoQueueCleared" tabindex="-1" role="dialog" aria-labelledby="infoQueueCleared" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">清除成功</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                放学班级已清空
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="questionQueueClear" tabindex="-1" role="dialog" aria-labelledby="questionQueueClear" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">警告</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    确实要清除已放学班级列表吗？此操作不可撤销！
+                    </div>
+                    <div class="modal-footer">
+                    <button id="btnclear" type="button" class="btn btn-danger">清除</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
