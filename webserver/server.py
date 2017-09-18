@@ -8,35 +8,15 @@ from collections import defaultdict
 import re
 import traceback
 
-wechat_appid = "wx915bb615a9511f33"
-wechat_appsecret = "7703e65a9b337f04b71337eb5c249313"
-wechat_token = "gLzMqah8NX"
-
-signout_template_id = "5hWcB-MjluEujdEaYdPtAWNuQhJ4yMsiaT8k9uc27p0"
+from config import *
 
 wechat_client = WeChatClient(wechat_appid, wechat_appsecret)
 
 # 假的数据库
-table_class_userid = defaultdict(list, {
-    "101": [
-        "o4SkFj5YKie5tgvui1PPnQzHm6RA",
-    ],
-})
-
-table_deviceid_class = {
-    "49985F": "101",
-    "1779A3": "201",
-}
-
-table_authencated_teacher = {
-    "48858EB9": "王老师",
-    "F01CF318": "张老师",
-    "41023B1A": "赵老师",
-    "9B8865D9": "钱老师",
-    "EEE56BD9": "孙老师",
-}
-
-queue_signed_out_classes = []
+table_class_userid = default_table_class_userid
+table_deviceid_class = default_table_deviceid_class
+table_authencated_teacher = default_table_authencated_teacher
+queue_signed_out_classes = default_queue_signed_out_classes
 
 # 微信检查是否合法 API endpoint
 @hug.get("/wechat_api", versions=1, output=hug.output_format.text)
