@@ -20,7 +20,7 @@
 #define WIFI_SSID "james_dorm_iot"
 #define WIFI_PASS "internetofshit"
 
-#define API_BASE_URL "http://192.168.88.250:8000/v1/"
+#define API_BASE_URL "http://ass.woliucloud.cn/v1/"
 #define USER_AGENT "ClassroomTerminal 1.0"
 
 // config end

@@ -82,10 +82,26 @@ def wechat_api_post(hug_nocache, body, signature, timestamp, nonce, **kwargs):
     except InvalidSignatureException:
         print("Failed to check signature")
 
-def wechat_push_signout_msg(userid, classname):
+def wechat_push_signout_msg(userid, teachername, classname):
     wechat_client.message.send_template(userid, signout_template_id, {
-                "class": {
+                "first": {
+                       "value": "您好，您的孩子已放学。",
+                       "color": "#173177",
+                },
+                "keyword1": {
                        "value": classname,
+                       "color": "#173177",
+                },
+                "keyword2": {
+                       "value": teachername,
+                       "color": "#173177",
+                },
+                "keyword3": {
+                       "value": get_current_time(),
+                       "color": "#173177",
+                },
+                "remark": {
+                       "value": "请尽快接走您的孩子！",
                        "color": "#173177",
                 },
             })
@@ -125,7 +141,7 @@ def signout(hug_nocache, body):
             print("正在推送 {}/{}".format(seq, len(users)))
             seq += 1
             try:
-                wechat_push_signout_msg(user, table_deviceid_class[msg["chipid"]])
+                wechat_push_signout_msg(user，table_authencated_teacher[msg["cardid"]], table_deviceid_class[msg["chipid"]])
             except:
                 traceback.print_exc()
         print("消息推送完成")
