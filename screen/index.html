@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>微信签退系统</title>
+        <title>放学智能管理系统</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
@@ -12,10 +12,14 @@
                 <div class="col-2 logo-stub align-self-start">
                     <img src="img/school_logo.png"></img>
                 </div>
-                <div class="col title">放学通知系统</div>
-                <div class="col-1 align-self-end align-items-center">
-                    <button id="btnAskClear" type="button" class="btn btn-danger">清空</button>
-                    <button id="btnrefresh" type="button" class="btn btn-warning">刷新</button>
+                <div class="col container">
+                        <div class="col title">放学智能管理系统</div>
+                        <div id="time" class="col subtitle">当前时间：</div>
+                        <div id="weather" class="col subtitle">当前天气：</div>
+                </div>
+                <div class="col-1 container">
+                    <div class="row"><button id="btnAskClear" type="button" class="btn btn-danger">清空</button></div>
+                    <div class="row"><button id="btnrefresh" type="button" class="btn btn-warning">刷新</button></div>
                 </div>
             </div>
             <div class="row">

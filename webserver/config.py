@@ -4,6 +4,8 @@ wechat_appid = "wx915bb615a9511f33"
 wechat_appsecret = "7703e65a9b337f04b71337eb5c249313"
 wechat_token = "gLzMqah8NX"
 
+seniverse_secret = "2huleldkhf6rkbol"
+
 signout_template_id = "5hWcB-MjluEujdEaYdPtAWNuQhJ4yMsiaT8k9uc27p0"
 
 default_table_class_userid = defaultdict(list, {
@@ -25,4 +27,4 @@ default_table_authencated_teacher = {
     "EEE56BD9": "孙老师",
 }
 
-default_queue_signed_out_classes = []
+default_queue_signed_out_classes = {}

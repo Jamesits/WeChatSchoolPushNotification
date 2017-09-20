@@ -5,8 +5,10 @@ from wechatpy import parse_message
 from wechatpy.replies import TextReply
 from wechatpy import WeChatClient
 from collections import defaultdict
+from datetime import datetime
 import re
 import traceback
+import requests
 
 from config import *
 
@@ -18,9 +20,18 @@ table_deviceid_class = default_table_deviceid_class
 table_authencated_teacher = default_table_authencated_teacher
 queue_signed_out_classes = default_queue_signed_out_classes
 
+# 禁用对 API endpoint 的缓存
+@hug.directive()
+def nocache(response=None, **kwargs):
+    '''Returns passed in parameter multiplied by itself'''
+    response \
+    and response.set_header('Cache-Control', "no-cache, no-store, must-revalidate") \
+    and response.set_header('Pragma', "no-cache") \
+    and response.set_header('Expires', 0)
+
 # 微信检查是否合法 API endpoint
 @hug.get("/wechat_api", versions=1, output=hug.output_format.text)
-def wechat_api_get(signature, timestamp, nonce, **kwargs):
+def wechat_api_get(hug_nocache, signature, timestamp, nonce, **kwargs):
     
     try:
         print("kwargs", kwargs)
@@ -35,7 +46,7 @@ def wechat_api_get(signature, timestamp, nonce, **kwargs):
 
 # 处理微信消息
 @hug.post("/wechat_api", versions=1, output=hug.output_format.text)
-def wechat_api_post(body, signature, timestamp, nonce, **kwargs):
+def wechat_api_post(hug_nocache, body, signature, timestamp, nonce, **kwargs):
     try:
         print("kwargs", kwargs)
         check_signature(wechat_token, signature, timestamp, nonce)
@@ -83,9 +94,13 @@ def wechat_push_signout_msg(userid, classname):
 def parse_device_msg(s):
     return dict(item.split("=") for item in s.split("&"))
 
+# 获取当前时间
+def get_current_time():
+    return datetime.now().strftime('%H:%M')
+
 # 教室端设备注册
 @hug.post(versions=1)
-def device_reg(body):
+def device_reg(hug_nocache, body):
     try:
         msg = parse_device_msg(body)
         print("设备 {}（{}）从网络 {} 注册成功".format(msg["chipid"], table_deviceid_class[msg["chipid"]], msg["wifi"]))
@@ -95,12 +110,15 @@ def device_reg(body):
 
 # 教室端签退动作
 @hug.post(versions=1)
-def signout(body):
+def signout(hug_nocache, body):
     try:
         msg = parse_device_msg(body)
         print("用户 {}（{}）从设备 {}（{}）宣布放学".format(msg["cardid"], table_authencated_teacher[msg["cardid"]], msg["chipid"], table_deviceid_class[msg["chipid"]]))
-        if table_deviceid_class[msg["chipid"]] not in queue_signed_out_classes:
-            queue_signed_out_classes.insert(0, table_deviceid_class[msg["chipid"]])
+        if table_deviceid_class[msg["chipid"]] not in [item["class"] for item in queue_signed_out_classes]:
+            queue_signed_out_classes.insert(0, {
+                "class": table_deviceid_class[msg["chipid"]],
+                "time": get_current_time(),
+            })
         users = table_class_userid[table_deviceid_class[msg["chipid"]]]
         seq = 1
         for user in users:
@@ -117,15 +135,24 @@ def signout(body):
 
 # 网页端 API
 @hug.get(versions=1, output=hug.output_format.pretty_json)
-def signout_queue():
-    print("获取已放学班级队列")
+def signout_queue(hug_nocache):
     return {"queue": queue_signed_out_classes}
 
 @hug.post(versions=1, output=hug.output_format.pretty_json)
-def clear_signout_queue():
+def clear_signout_queue(hug_nocache):
     print("清除已放学班级队列")
     queue_signed_out_classes.clear()
     return {"result": "success"}
+
+@hug.get(versions=1, output=hug.output_format.pretty_json)
+def weather(location, unit="c"):
+    result = requests.get("https://api.seniverse.com/v3/weather/now.json", params={
+        'key': seniverse_secret,
+        'location': location,
+        'unit': unit,
+    })
+    print(result.text)
+    return result.json()
 
 # 静态文件
 @hug.static('/')

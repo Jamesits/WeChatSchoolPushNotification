@@ -1,3 +1,8 @@
+html, body {
+    min-width: 1000px;
+    min-height: 700px;
+}
+
 .logo-stub {
     min-height: 128px;
     min-width: 128px;
@@ -9,6 +14,10 @@
 
 .title-row {
     border-bottom: black dotted 1px;
+}
+
+.subtitle {
+    font-size: 1.75em;
 }
 
 #class-list-title {
