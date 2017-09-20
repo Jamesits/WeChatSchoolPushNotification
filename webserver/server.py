@@ -141,7 +141,7 @@ def signout(hug_nocache, body):
             print("正在推送 {}/{}".format(seq, len(users)))
             seq += 1
             try:
-                wechat_push_signout_msg(user，table_authencated_teacher[msg["cardid"]], table_deviceid_class[msg["chipid"]])
+                wechat_push_signout_msg(user, table_authencated_teacher[msg["cardid"]], table_deviceid_class[msg["chipid"]])
             except:
                 traceback.print_exc()
         print("消息推送完成")
