@@ -1,13 +1,13 @@
 from collections import defaultdict
 
-wechat_appid = "wx4e3736cb122012e8"
-wechat_appsecret = "51298e257187c8e5c88d65242af724c2"
+wechat_appid = "wxe97b8b07afb3b197"
+wechat_appsecret = "0e4d7cab4cc0dbe6708cccc641d0e4ba"
 wechat_token = "gLzMqah8NX"
 
 seniverse_secret = "2huleldkhf6rkbol"
 
 # 添加 OPENTM204533457 班级通知 模板
-signout_template_id = "Ym1PQa-Iz-DcbvaIrSNorEel5dhB4R9VjRxBwgI1s80"
+signout_template_id = "vhbZQwNW2CsQ39mzE0iya1fQlGBfpP1Wgx-Z_-Lgz2w"
 
 default_table_class_userid = defaultdict(list, {
     "101": [
