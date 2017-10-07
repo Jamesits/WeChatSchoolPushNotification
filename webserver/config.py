@@ -3,6 +3,7 @@ from collections import defaultdict
 wechat_appid = "wxe97b8b07afb3b197"
 wechat_appsecret = "0e4d7cab4cc0dbe6708cccc641d0e4ba"
 wechat_token = "gLzMqah8NX"
+wechat_encodingaeskey = "BN2TYcvmPE9Kqe2NRdKwbJUz7daieS3KZefFnSjFKqL"
 
 seniverse_secret = "2huleldkhf6rkbol"
 
