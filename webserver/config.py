@@ -28,4 +28,4 @@ default_table_authencated_teacher = {
     "EEE56BD9": "孙老师",
 }
 
-default_queue_signed_out_classes = {}
+default_queue_signed_out_classes = []
