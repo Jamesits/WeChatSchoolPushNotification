@@ -8,6 +8,7 @@
 #define RST_PIN  0
 #define SS_PIN  15
 #define LED 2
+#define SUCCESS_LED 4 // D2
 #define BUTTON 5
 
 #define CARD_UID_SIZE 4
@@ -215,6 +216,7 @@ void print_byte_array(byte *buffer, byte bufferSize) {
 }
 
 void flash_twice() {
+  digitalWrite(SUCCESS_LED, HIGH);
   digitalWrite(LED, LOW);
   delay(100);
   digitalWrite(LED, HIGH);
@@ -223,6 +225,8 @@ void flash_twice() {
   delay(100);
   digitalWrite(LED, HIGH);
   delay(100);
+  delay(500);
+  digitalWrite(SUCCESS_LED, LOW);
 }
 
 void register_device() {
