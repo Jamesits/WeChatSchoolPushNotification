@@ -108,7 +108,23 @@ def wechat_push_signout_msg(userid, teachername, classname):
 
 # 解析形如 A=1&B=2 的数据
 def parse_device_msg(s):
-    return dict(item.split("=") for item in s.split("&"))
+    #print(s)
+    #try:
+    #    return dict(s)
+    print('::: Payload: {}'.format(repr(s)))
+    try:
+        payload = s.read().decode('utf-8', 'replace')
+    except Exception:
+        if isinstance(s, dict):
+            return s
+        elif isinstance(s, bytes):
+            payload = s.decode('utf-8', 'replace')
+        elif isinstance(s, str):
+            payload = s
+        else:
+            print(s)
+            assert False
+    return dict(item.split("=") for item in payload.split("&"))
 
 # 获取当前时间
 def get_current_time():

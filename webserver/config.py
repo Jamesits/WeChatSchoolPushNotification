@@ -14,6 +14,9 @@ default_table_class_userid = defaultdict(list, {
     "101": [
         "oeom10dOZEnNJg8QUN6g-E3anfF0",
     ],
+    "201": [
+        "oeom10Ya8-7e51msFbSXuGr2Sh1E", # Mr. Tang
+    ]
 })
 
 default_table_deviceid_class = {
@@ -29,4 +32,5 @@ default_table_authencated_teacher = {
     "EEE56BD9": "孙老师",
 }
 
-default_queue_signed_out_classes = []
+default_queue_signed_out_classes = [
+]
